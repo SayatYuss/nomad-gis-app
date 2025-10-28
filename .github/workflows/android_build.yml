@@ -1,0 +1,53 @@
+name: Build Flutter Android (Release APK for Test)
+
+on:
+  push:
+    branches:
+      - main # Или ваша основная ветка
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Стандартная настройка
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      # 2. Генерируем ВРЕМЕННЫЙ Keystore
+      # Этот ключ будет создан, использован 1 раз и удален
+      # вместе с сервером GitHub Actions.
+      - name: Generate Temporary Keystore
+        run: |
+          keytool -genkey -v -keystore test-keystore.jks \
+            -storepass testpass -keypass testpass \
+            -alias testkey \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Test, OU=Test, O=Test, L=Test, ST=Test, C=US"
+
+      # 3. Собираем Release APK, используя этот временный ключ
+      - name: Build Flutter Release APK
+        run: |
+          flutter build apk --release \
+            --keystore-password="testpass" \
+            --key-password="testpass" \
+            --keystore="test-keystore.jks" \
+            --key-alias="testkey"
+
+      # 4. Загружаем артефакт
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk-test
+          path: build/app/outputs/flutter-apk/app-release.apk
