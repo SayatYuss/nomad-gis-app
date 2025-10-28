@@ -1,0 +1,55 @@
+# Имя вашего Workflow
+name: Build Unsigned iOS IPA (for AltStore)
+
+on:
+  push:
+    branches:
+      - main # Или ваша основная ветка
+
+jobs:
+  build-ios:
+    # Все еще нужен macOS runner, так как он содержит Xcode
+    runs-on: macos-latest
+
+    steps:
+      # 1. Получаем код
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Устанавливаем Java (требуется для Flutter)
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      # 3. Устанавливаем Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # 4. Устанавливаем зависимости
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      # 5. Собираем .app бандл (БЕЗ ПОДПИСИ)
+      # Мы НЕ используем 'flutter build ipa'
+      # Эта команда создаст 'build/ios/iphoneos/Runner.app'
+      - name: Build Flutter iOS (.app)
+        run: flutter build ios --release --no-codesign
+
+      # 6. Магия: Упаковываем .app в .ipa вручную
+      # .ipa - это просто ZIP-архив с папкой Payload/
+      - name: Create Unsigned IPA
+        run: |
+          mkdir Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -r app-unsigned.ipa Payload/
+
+      # 7. Загружаем .ipa файл как артефакт
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-ipa
+          path: app-unsigned.ipa # Указываем путь к нашему созданному файлу
