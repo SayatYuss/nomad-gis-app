@@ -5,10 +5,10 @@
     <application
         android:label="nomad_gis"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher">
         <meta-data
         android:name="com.yandex.mapkit.API_KEY"
-        android:value="841f16bb-5683-4ea7-9911-6b7811280c76" />>
+        android:value="841f16bb-5683-4ea7-9911-6b7811280c76" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
