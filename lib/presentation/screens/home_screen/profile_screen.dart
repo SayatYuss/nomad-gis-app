@@ -46,7 +46,7 @@ class ProfileScreen extends ConsumerWidget {
                     // -- Аватар --
                     CircleAvatar(
                       radius: 50,
-                      backgroundColor: theme.colorScheme.surfaceVariant, // Фон, если картинка не загрузится
+                      backgroundColor: theme.colorScheme.surfaceContainerHighest, // Фон, если картинка не загрузится
                       // Используем NetworkImage для загрузки из URL
                       // Обрабатываем случай, если avatarUrl == null или пустой
                       backgroundImage: (avatarUrl != null && avatarUrl.isNotEmpty)

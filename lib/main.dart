@@ -4,7 +4,7 @@ import 'package:yandex_maps_mapkit_lite/init.dart' as init;
 
 // 1. Импортируем наши экраны и провайдер
 import 'presentation/providers/auth_provider.dart';
-import 'presentation/screens/auth/login_screen.dart';
+import 'presentation/screens/auth/auth_screen.dart';
 import 'presentation/screens/home_screen/homeScreen.dart';
 
 const String YANDEX_API_KEY = '841f16bb-5683-4ea7-9911-6b7811280c76'; // 🔑 вставь сюда свой ключ
@@ -44,7 +44,7 @@ class MyApp extends ConsumerWidget {
         AuthState.authenticated => const HomeScreen(),
         
         // Если не вошли - показываем экран входа
-        AuthState.unauthenticated => const LoginScreen(),
+        AuthState.unauthenticated => const AuthScreen(),
         
         // По умолчанию (пока идет проверка) - показываем загрузку
         AuthState.unknown => const Scaffold(

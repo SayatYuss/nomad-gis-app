@@ -15,11 +15,7 @@ class _MapScreenState extends State<MapScreen> {
   
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: YandexMap(onMapCreated: (mapWindow) => _mapWindow = mapWindow)
-      )
-    );
+    return  YandexMap(onMapCreated: (mapWindow) => _mapWindow = mapWindow);
   }
 }
 
