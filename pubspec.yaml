@@ -6,6 +6,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.9.2
 
+
 dependencies:
   flutter:
     sdk: flutter
@@ -19,8 +20,8 @@ dependencies:
 
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  # Для карты (OpenStreetMap)
-  yandex_mapkit: ^4.2.1 
+  yandex_maps_mapkit_lite:
+    version: ^4.25.0-beta
   
   # Для GPS-локации
   geolocator: ^12.0.0
@@ -35,3 +36,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/ # Эта строка объявляет всю папку assets

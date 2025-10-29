@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yandex_maps_mapkit_lite/init.dart' as init;
 
 // 1. Импортируем наши экраны и провайдер
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/screens/auth/login_screen.dart';
 import 'presentation/screens/home_screen/homeScreen.dart';
 
-void main() {
+const String YANDEX_API_KEY = '841f16bb-5683-4ea7-9911-6b7811280c76'; // 🔑 вставь сюда свой ключ
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await init.initMapkit(
+      apiKey: YANDEX_API_KEY
+    ); 
+
   // 2. Оборачиваем все приложение в ProviderScope
   runApp(
     const ProviderScope(
